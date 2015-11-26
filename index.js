@@ -9,8 +9,8 @@
  *
  * @returns {Function}
  */
-module.exports = function(modelOrFetchFn, options) {
-    options = Object.assign({}, this.options, options);
+function loadObject(modelOrFetchFn, options) {
+    options = Object.assign({}, loadObject.options, options);
 
     var errorMessage = options.errorMessage;
     var errorFactory = options.errorFactory || function(message) {
@@ -56,4 +56,6 @@ module.exports = function(modelOrFetchFn, options) {
             })
             .catch(next);
     };
-};
+}
+
+module.exports = loadObject;
