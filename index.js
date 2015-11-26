@@ -1,15 +1,15 @@
 /**
- * @param {Object|Function} modelOrFetchFn - Mongoose model or fetch function that returns a promise
+ * @param {Object|Function} modelOrLoadFunction - Mongoose model or load function that returns a promise
  * @param {Object}          [options]
  * @param {Function}          [options.errorFactory]
  * @param {String}            [options.errorMessage]
  * @param {String}            [options.fieldName=_id] - Only for model
- * @param {String}            [options.objectName] - Required for fetchFn
+ * @param {String}            [options.objectName] - Required for load function
  * @param {Boolean}           [options.passErrorToNext=true]
  *
  * @returns {Function}
  */
-function loadObject(modelOrFetchFn, options) {
+function loadObject(modelOrLoadFunction, options) {
     options = Object.assign({}, loadObject.options, options);
 
     var errorMessage = options.errorMessage;
@@ -22,28 +22,28 @@ function loadObject(modelOrFetchFn, options) {
     var objectName      = options.objectName;
     var passErrorToNext = options.hasOwnProperty('passErrorToNext') ? options.passErrorToNext : true;
 
-    var fetchFn;
+    var loadFunction;
 
-    if (modelOrFetchFn.findOne instanceof Function) {
-        var model     = modelOrFetchFn;
+    if (modelOrLoadFunction.findOne instanceof Function) {
+        var model     = modelOrLoadFunction;
         var fieldName = options.fieldName || '_id';
 
         if (!objectName) {
             objectName = model.modelName[0].toLowerCase() + model.modelName.slice(1);
         }
 
-        fetchFn = function(req, value) {
+        loadFunction = function(req, value) {
             return model.findOne({ [fieldName]: value });
         };
     } else {
-        fetchFn = modelOrFetchFn;
+        loadFunction = modelOrLoadFunction;
         if (!objectName) {
-            throw new Error('Object name for fetchFn must be set');
+            throw new Error('objectName for load function must be set');
         }
     }
 
     return function(req, res, next, value, name) {
-        fetchFn(req, req.params[name])
+        loadFunction(req, req.params[name])
             .then(function(object) {
                 if (!object && passErrorToNext) {
                     var err = errorFactory(errorMessage);
