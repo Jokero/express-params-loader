@@ -2,7 +2,7 @@
  * @param {Object|Function} modelOrLoadFunction - Mongoose model or load function that returns a promise
  * @param {Object}          [options]
  * @param {Function}          [options.errorFactory]
- * @param {String}            [options.errorMessage]
+ * @param {String|Function}   [options.errorMessage]
  * @param {String}            [options.fieldName=_id] - Only for model
  * @param {String}            [options.objectName] - Required for load function
  * @param {Boolean}           [options.passErrorToNext=true]
@@ -12,7 +12,9 @@
 function loadObject(modelOrLoadFunction, options) {
     options = Object.assign({}, loadObject.options, options);
 
-    var errorMessage = options.errorMessage;
+    var errorMessageFunction = options.errorMessage instanceof Function ? options.errorMessage : function() {
+        return options.errorMessage;
+    };
     var errorFactory = options.errorFactory || function(message) {
         var err = new Error(message);
         err.status = 404;
@@ -46,7 +48,9 @@ function loadObject(modelOrLoadFunction, options) {
         loadFunction(req, req.params[name])
             .then(function(object) {
                 if (!object && passErrorToNext) {
-                    var err = errorFactory(errorMessage);
+                    var errorMessage = errorMessageFunction(req);
+                    var err          = errorFactory(errorMessage);
+
                     return Promise.reject(err);
                 }
 
