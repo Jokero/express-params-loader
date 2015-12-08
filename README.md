@@ -1,6 +1,6 @@
 # express-params-loader
 
-Object loader for express [app.param()](http://expressjs.com/en/4x/api.html#app.param) method
+Object loader for express [app.param()](http://expressjs.com/en/4x/api.html#app.param) and [router.param()](http://expressjs.com/en/4x/api.html#router.param) methods
 
 [![NPM version](https://img.shields.io/npm/v/express-params-loader.svg)](https://npmjs.org/package/express-params-loader)
 [![Build status](https://img.shields.io/travis/Jokero/express-params-loader.svg)](https://travis-ci.org/Jokero/express-params-loader)
@@ -24,7 +24,7 @@ To load object you can use custom load function or [Mongoose model](http://mongo
 * `modelOrLoadFunction` {Model | Function} - Mongoose model or custom load function that returns a promise
 * `[options]` {Object}
   - `[fieldName=_id]` {String} - Field that is used to search for a document (only for model)
-  - `[objectName]` {String} - `req` property for object loading. Default value: lowercased model name for model and "object" for load function
+  - `[objectName]` {String} - `req` property for object loading. Default value: `lowercased model name` for model and `"object"` for load function
   - `[passErrorToNext=true]` {Boolean} - Should `next()` function be called with error if object not found?
   - `[errorFactory]` {Function} - Factory for error creation if object not found
   - `[errorMessage]` {String | Function} - Error message
