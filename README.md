@@ -1,6 +1,7 @@
 # express-params-loader
 
-Object loader for express [app.param()](http://expressjs.com/en/4x/api.html#app.param) and [router.param()](http://expressjs.com/en/4x/api.html#router.param) methods
+Loader for express [app.param()](http://expressjs.com/en/4x/api.html#app.param) and [router.param()](http://expressjs.com/en/4x/api.html#router.param) methods.
+Extends req with object loaded from MongoDB or other source
 
 [![NPM version](https://img.shields.io/npm/v/express-params-loader.svg)](https://npmjs.org/package/express-params-loader)
 [![Build status](https://img.shields.io/travis/Jokero/express-params-loader.svg)](https://travis-ci.org/Jokero/express-params-loader)

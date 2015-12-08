@@ -1,6 +1,6 @@
 {
     "name":        "express-params-loader",
-    "description": "Object loader for express app.param() and router.param()",
+    "description": "Loader for express app.param() and router.param() methods. Extends req with object loaded from MongoDB or other source",
     "version":     "0.1.0",
 
     "author": {
