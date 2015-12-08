@@ -15,17 +15,53 @@ npm install express-params-loader
 
 ## Usage
 
-Add plugin to a schema and then use model `paginate` method:
+To load object you can use custom load function or [Mongoose](http://mongoosejs.com) model:
+
+### loadObject(modelOrLoadFunction, [options])
+
+### Load function
 
 ```js
-var mongoose         = require('mongoose');
-var mongoosePaginate = require('mongoose-paginate');
+var loadObject = require('express-params-loader');
 
-var schema = new mongoose.Schema({ /* schema definition */ });
-schema.plugin(mongoosePaginate);
+var app = express();
 
-var Model = mongoose.model('Model',  schema); // Model.paginate()
+app.param('id', loadObject(function(req, id) {
+    // load function must return promise
+    return Promise.resolve({ id: 1, title: 'The Lord of the Rings' });
+}));
+
+app.get('/books/:id', function(req, res, next) {
+  // req.object is loaded book
+});
 ```
+
+By default object is loaded to `req.object`. But you can change it using `objectName` option:
+
+```js
+app.param('id', loadObject(
+    function(req, id) {
+        return Promise.resolve({ id: 1, title: 'The Lord of the Rings' });
+    },
+    { objectName: 'book' }
+));
+
+app.get('/books/:id', function(req, res, next) {
+  // req.book is loaded book
+});
+```
+
+### Mongoose model
+
+```js
+app.param('id', loadObject(Book));
+
+app.get('/books/:id', function(req, res, next) {
+  // req.book
+});
+```
+
+By default object is loaded to req[<lowercased model name>]. You can change it too.
 
 ### Model.paginate([query], [options], [callback])
 
