@@ -1,12 +1,32 @@
 {
-    "name":    "express-params-loader",
-    "version": "0.1.0",
+    "name":        "express-params-loader",
+    "description": "Object loader using express route parameter",
+    "version":     "0.1.0",
+
+    "author": {
+        "name":  "Dmitry Kirilyuk",
+        "email": "gk.joker@gmail.com"
+    },
+
+    "repository": {
+        "type": "git",
+        "url":  "https://github.com/Jokero/express-params-loader.git"
+    },
+
+    "license": "MIT",
+
+    "keywords": [
+        "express",
+        "express-params",
+        "params",
+        "mongoose",
+        "loader",
+        "load"
+    ],
 
     "engines": {
         "node" : ">=4.0.0"
     },
-
-    "license": "MIT",
 
     "devDependencies": {
         "supertest-as-promised": "2.0.2",
