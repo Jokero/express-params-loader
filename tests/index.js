@@ -165,7 +165,7 @@ describe('express-params-loader', function() {
             });
 
             app.get('/books/bestsellers/:bestsellerId', function(req, res) {
-                res.send(req.bestseller);
+                res.send(req.book);
             });
 
             return app;
