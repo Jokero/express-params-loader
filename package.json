@@ -19,6 +19,7 @@
         "express",
         "express-params",
         "params",
+        "param",
         "mongoose",
         "loader",
         "load"
