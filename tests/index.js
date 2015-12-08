@@ -23,25 +23,30 @@ const TEST_BOOK = {
 
 
 describe('express-params-loader', function() {
-    before(function(done) {
-        mongoose.connect(MONGO_URI, done);
-    });
+    describe('loads object using Mongoose model', function() {
+        before(function(done) {
+            mongoose.connect(MONGO_URI, done);
+        });
 
-    before(function(done) {
-        mongoose.connection.db.dropDatabase(done);
-    });
+        before(function(done) {
+            mongoose.connection.db.dropDatabase(done);
+        });
 
-    before(function() {
-        return Book.create(TEST_BOOK);
-    });
+        before(function() {
+            return Book.create(TEST_BOOK);
+        });
 
-    describe('loads object using model', function() {
+        afterEach(function() {
+            delete loadObject.options;
+        });
+
         var createApp = function() {
             var app = express();
 
             app.param('id', loadObject(Book));
             app.param('title', loadObject(Book, { fieldName: 'title' }));
             app.param('bestsellerId', loadObject(Book, { objectName: 'bestseller' }));
+            app.param('popularBookId', loadObject(Book));
 
             app.get('/books/:id', function(req, res) {
                 res.send(req.book);
@@ -53,6 +58,10 @@ describe('express-params-loader', function() {
 
             app.get('/books/bestsellers/:bestsellerId', function(req, res) {
                 res.send(req.bestseller);
+            });
+
+            app.get('/books/popular/:popularBookId', function(req, res) {
+                res.send(req.loadedObject);
             });
 
             return app;
@@ -81,6 +90,18 @@ describe('express-params-loader', function() {
         it('with custom objectName', function() {
             return request(createApp())
                 .get('/books/bestsellers/1')
+                .expect(200)
+                .then(function(res) {
+                    expect(res.body._id).to.equal(TEST_BOOK._id);
+                    expect(res.body.title).to.equal(TEST_BOOK.title);
+                });
+        });
+
+        it('with custom default options', function() {
+            loadObject.options = { objectName: 'loadedObject' };
+
+            return request(createApp())
+                .get('/books/popular/1')
                 .expect(200)
                 .then(function(res) {
                     expect(res.body._id).to.equal(TEST_BOOK._id);
