@@ -1,6 +1,6 @@
 {
     "name":        "express-params-loader",
-    "description": "Object loader using express route parameter",
+    "description": "Object loader for express app.param() and router.param()",
     "version":     "0.1.0",
 
     "author": {
