@@ -1,11 +1,11 @@
 # express-params-loader
 
-Object loader using express route parameter
+Object loader for express [param()](http://expressjs.com/en/4x/api.html#app.param) function
 
 [![NPM version](https://img.shields.io/npm/v/express-params-loader.svg)](https://npmjs.org/package/express-params-loader)
 [![Build status](https://img.shields.io/travis/Jokero/express-params-loader.svg)](https://travis-ci.org/Jokero/express-params-loader)
 
-**Note:** This package will only work with Node.js >= 4.0.
+**Note:** This plugin will only work with Node.js >= 4.0 and Mongoose >= 4.0.
 
 ## Installation
 
@@ -15,11 +15,53 @@ npm install express-params-loader
 
 ## Usage
 
-To load object you can use custom load function or [Mongoose](http://mongoosejs.com) model:
+To load object you can use custom load function or [Mongoose model](http://mongoosejs.com/docs/models.html):
 
 ### loadObject(modelOrLoadFunction, [options])
 
-### Load function
+**Parameters**
+
+* `modelOrLoadFunction` {Model | Function} - Mongoose model or custom load function that returns a promise
+* `[options]` {Object}
+  - `[fieldName=_id]` {String} - Only for model
+  - `[objectName]` {String} - Default value: lowercased model name for model and "object" for load function
+  - `[passErrorToNext=true]` {Boolean}
+  - `[errorFactory]` {Function}
+  - `[errorMessage]` {String | Function}
+
+### Examples
+
+#### Mongoose model
+
+```js
+app.param('id', loadObject(Book)); // Book is Mongoose model
+
+app.get('/books/:id', function(req, res, next) {
+  // req.book is loaded book
+});
+```
+
+By default object is loaded to `req[<lowercased model name>]`. You can change it using `objectName` option:
+
+```js
+app.param('id', loadObject(Book, { objectName: 'loadedBook' }));
+
+app.get('/books/:id', function(req, res, next) {
+  // req.loadedBook
+});
+```
+
+Loader finds a single document by its `_id` field. You can use another field with `fieldName` option:
+
+```js
+app.param('title', loadObject(Book, { fieldName: 'title' }));
+
+app.get('/books/by-title/:title', function(req, res) {
+    // req.book
+});
+```
+
+#### Load function
 
 ```js
 var loadObject = require('express-params-loader');
@@ -50,18 +92,6 @@ app.get('/books/:id', function(req, res, next) {
   // req.book is loaded book
 });
 ```
-
-### Mongoose model
-
-```js
-app.param('id', loadObject(Book));
-
-app.get('/books/:id', function(req, res, next) {
-  // req.book
-});
-```
-
-By default object is loaded to req[<lowercased model name>]. You can change it too.
 
 ### Model.paginate([query], [options], [callback])
 
