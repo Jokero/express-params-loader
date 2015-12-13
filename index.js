@@ -1,6 +1,6 @@
 /**
  * @param {Object|Function} modelOrLoadFunction - Mongoose model or load function that returns a promise
- * @param {Object}          [options]
+ * @param {Object}          [options={}]
  * @param {String}            [options.fieldName=_id] - Only for model
  * @param {String}            [options.objectName] - Default value: lowercased model name for model and 'object' for load function
  * @param {Boolean}           [options.passErrorToNext=true]
