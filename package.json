@@ -1,11 +1,43 @@
 {
-    "name":    "express-params-loader",
-    "version": "0.0.1",
-    "private": true,
+    "name":        "express-params-loader",
+    "description": "Loader for express app.param() and router.param() methods. Extends req with object loaded from MongoDB or other source",
+    "version":     "0.1.0",
+
+    "author": {
+        "name":  "Dmitry Kirilyuk",
+        "email": "gk.joker@gmail.com"
+    },
+
+    "repository": {
+        "type": "git",
+        "url":  "https://github.com/Jokero/express-params-loader.git"
+    },
+
+    "license": "MIT",
+
+    "keywords": [
+        "express",
+        "express-params",
+        "params",
+        "param",
+        "mongoose",
+        "loader",
+        "load"
+    ],
 
     "engines": {
         "node" : ">=4.0.0"
     },
 
-    "license": "MIT"
+    "devDependencies": {
+        "supertest-as-promised": "2.0.2",
+        "express":               "4.13.3",
+        "mongoose":              "4.2.8",
+        "mocha":                 "2.3.4",
+        "chai":                  "3.4.1"
+    },
+
+    "scripts": {
+        "test": "./node_modules/.bin/mocha tests/*.js --timeout 5000"
+    }
 }

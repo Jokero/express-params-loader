@@ -1,11 +1,11 @@
 /**
  * @param {Object|Function} modelOrLoadFunction - Mongoose model or load function that returns a promise
- * @param {Object}          [options]
+ * @param {Object}          [options={}]
+ * @param {String}            [options.fieldName=_id] - Only for model
+ * @param {String}            [options.objectName] - Default value: lowercased model name for model and 'object' for load function
+ * @param {Boolean}           [options.passErrorToNext=true]
  * @param {Function}          [options.errorFactory]
  * @param {String|Function}   [options.errorMessage]
- * @param {String}            [options.fieldName=_id] - Only for model
- * @param {String}            [options.objectName] - Required for load function
- * @param {Boolean}           [options.passErrorToNext=true]
  *
  * @returns {Function}
  */
@@ -30,35 +30,32 @@ function loadObject(modelOrLoadFunction, options) {
         var model     = modelOrLoadFunction;
         var fieldName = options.fieldName || '_id';
 
-        if (!objectName) {
-            objectName = model.modelName[0].toLowerCase() + model.modelName.slice(1);
-        }
-
         loadFunction = function(req, value) {
             return model.findOne({ [fieldName]: value });
         };
+
+        objectName = objectName || model.modelName.toLowerCase();
     } else {
         loadFunction = modelOrLoadFunction;
-        if (!objectName) {
-            throw new Error('objectName for load function must be set');
-        }
+        objectName   = objectName || 'object';
     }
 
     return function(req, res, next, value, name) {
-        loadFunction(req, req.params[name])
-            .then(function(object) {
+        loadFunction(req, req.params[name]).then(
+            function(object) {
                 if (!object && passErrorToNext) {
                     var errorMessage = errorMessageFunction(req);
                     var err          = errorFactory(errorMessage);
 
-                    return Promise.reject(err);
+                    return next(err);
                 }
 
                 req[objectName] = object;
 
                 next();
-            })
-            .catch(next);
+            },
+            next
+        );
     };
 }
 
