@@ -6,7 +6,7 @@ Extends [req](http://expressjs.com/en/4x/api.html#req) with object loaded from M
 [![NPM version](https://img.shields.io/npm/v/express-params-loader.svg)](https://npmjs.org/package/express-params-loader)
 [![Build status](https://img.shields.io/travis/Jokero/express-params-loader.svg)](https://travis-ci.org/Jokero/express-params-loader)
 
-**Note:** This plugin will only work with Node.js >= 4.0 and Mongoose >= 4.0.
+**Note:** This module will only work with Node.js >= 4.0 and Mongoose >= 4.0.
 
 ## Installation
 
