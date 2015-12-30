@@ -1,3 +1,5 @@
+var lowerCamelCase = require('lodash.camelcase');
+
 /**
  * @param {Object|Function} modelOrLoadFunction - Mongoose model or load function that returns a promise
  * @param {Object}          [options={}]
@@ -34,7 +36,7 @@ function loadObject(modelOrLoadFunction, options) {
             return model.findOne({ [fieldName]: value });
         };
 
-        objectName = objectName || model.modelName.toLowerCase();
+        objectName = objectName || lowerCamelCase(model.modelName);
     } else {
         loadFunction = modelOrLoadFunction;
         objectName   = objectName || 'object';

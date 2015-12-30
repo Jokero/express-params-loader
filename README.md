@@ -25,7 +25,7 @@ To load object you can use custom load function or [Mongoose model](http://mongo
 * `modelOrLoadFunction` {Model | Function} - Mongoose model or custom load function that returns a promise
 * `[options]` {Object}
   - `[fieldName=_id]` {String} - Field that is used to search for a document (only for model)
-  - `[objectName]` {String} - `req` property for object loading. Default value: `lowercased model name` for model and `"object"` for load function
+  - `[objectName]` {String} - `req` property for object loading. Default value: `lowerCamelCased model name` for model and `"object"` for load function
   - `[passErrorToNext=true]` {Boolean} - Should `next()` function be called with error if object not found?
   - `[errorFactory]` {Function} - Factory for error creation if object not found
   - `[errorMessage]` {String | Function} - Error message
@@ -47,7 +47,7 @@ app.get('/books/:id', function(req, res, next) {
 });
 ```
 
-By default object is loaded to `req[<lowercased model name>]`. You can change it using `objectName` option:
+By default object is loaded to `req[<lowerCamelCased model name>]`. You can change it using `objectName` option:
 
 ```js
 app.param('id', loadObject(Book, { objectName: 'loadedBook' }));
