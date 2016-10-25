@@ -43,6 +43,6 @@
     },
 
     "scripts": {
-        "test": "./node_modules/.bin/mocha tests/*.js --timeout 5000"
+        "test": "mocha tests/*.js --timeout 5000"
     }
 }
